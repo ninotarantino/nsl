@@ -41,8 +41,12 @@ class zip {
             }
 
             bool operator==(const iterator& other) const {
-                return detail::any_tuple_element_equal(
-                    m_data, other.m_data, std::index_sequence_for<Types...>{});
+                if constexpr (sizeof...(Types) == 0) {
+                    return true;
+                } else {
+                    return detail::any_tuple_element_equal(
+                        m_data, other.m_data, std::index_sequence_for<Types...>{});
+                }
             }
 
             reference operator*() {
