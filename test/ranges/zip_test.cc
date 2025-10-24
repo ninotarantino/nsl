@@ -23,7 +23,7 @@ TEST(zip_test, empty_zip) {
     }
 }
 
-TEST(test_zip, mismatched_sizes) {
+TEST(zip_test, mismatched_sizes) {
     std::array int_array {1, 2};
     std::vector int_vector {1, 2, 3, 4};
 
@@ -33,4 +33,24 @@ TEST(test_zip, mismatched_sizes) {
         index++;
     }
     EXPECT_EQ(index, std::min(int_array.size(), int_vector.size())) << "Iteration past bounds";
+}
+
+TEST(zip_test, operators) {
+    std::array int_array {1, 2, 3, 4, 5, 6};
+    std::vector int_vector {1, 2, 3, 4, 5};
+    auto iterator = nsl::zip(int_array, int_vector).begin();
+
+    EXPECT_EQ(*(++iterator), std::make_tuple(2, 2));
+    EXPECT_EQ(*iterator, std::make_tuple(2, 2));
+
+    EXPECT_EQ(*(iterator++), std::make_tuple(2, 2));
+    EXPECT_EQ(*iterator, std::make_tuple(3, 3));
+
+    EXPECT_EQ(*(--iterator), std::make_tuple(2, 2));
+    EXPECT_EQ(*iterator, std::make_tuple(2, 2));
+
+    EXPECT_EQ(*(iterator--), std::make_tuple(2, 2));
+    EXPECT_EQ(*iterator, std::make_tuple(1, 1));
+
+    EXPECT_EQ(iterator[3], std::make_tuple(4, 4));
 }
